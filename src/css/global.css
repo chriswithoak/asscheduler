@@ -21,6 +21,12 @@ header.as-header {
     gap: 30px;
 }
 
+.required-note {
+    font-style: italic;
+    display: block;
+    margin-bottom: 30px;
+}
+
 .as-form input[type="submit"] {
     padding: 10px 20px;
     font-weight: bold;
