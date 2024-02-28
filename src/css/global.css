@@ -1,0 +1,63 @@
+* {
+    box-sizing: border-box;
+}
+
+.as-scheduler {
+    background: #ebebeb;
+}
+
+header.as-header {
+    padding: 40px;
+    border-bottom: 1px solid black;
+}
+
+.as-form {
+    padding: 40px;
+}
+
+.as-form form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.as-form input[type="submit"] {
+    padding: 10px 20px;
+    font-weight: bold;
+    font-size: 16px;
+    border-radius: 0px;
+    border: 1px solid #000;
+}
+
+.input-group {
+    flex: 1 0 calc(50% - 30px);
+}
+
+.input-group.size-short {
+    flex: 1 0 calc(25% - 30px);
+}
+
+.input-group.size-full {
+    flex: 1 0 calc(100% - 30px);
+}
+
+.input-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+
+.input-group textarea,
+.input-group input {
+    width: 100%;
+    border: 1px solid #000;
+    padding: 10px;
+}
+
+.check-option input,
+.check-option label {
+    display: inline;
+    width: fit-content;
+    font-weight: 400;
+}
