@@ -1,20 +1,20 @@
-module.exports = async function (context, req) {
-    try {
-        const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
-            method: "POST",
-            body: JSON.stringify( {
-                userId: 24,
-                title: "Test Title",
-                body: "Lorem Ipsum A&S",
-            } )
-        });
+const axios = require("axios");
 
-        const test = await response.json();
-       
-        context.res.json({
-            text: test
-        });
-    } catch (error) {
-      throw error;
-    }
+module.exports = async function (context, req) {
+  try {
+    var body = {
+      userId: 24,
+      title: "Test Title",
+      body: "Lorem Ipsum A&S",
+    };
+
+    const response = await axios.post(
+      "https://jsonplaceholder.typicode.com/posts",
+      body
+    );
+
+    context.res.json(response.data);
+  } catch (error) {
+    throw error;
+  }
 };
