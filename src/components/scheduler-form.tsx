@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { getAuthToken, getDummyData } from '../services/api-service'
 
 function SchedulerForm() {
     const [inputField , setInputField] = useState({
@@ -21,9 +22,35 @@ function SchedulerForm() {
         setInputField( { ...inputField, [e.target.name]: e.target.value } )
     }
 
+    // API CALLS
+    async function callAuthToken() {
+        try {
+            // const result = await getAuthToken();
+            const result = await getAuthToken();
+            console.log(result);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+
+    async function callJsonPlaceholder() {
+        try {
+            // const result = await getAuthToken();
+            const result = await getDummyData();
+            console.log(result);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+
     const handleSubmit = ( e:any ) => {
+        callAuthToken()
         console.log(inputField)
         e.preventDefault()
+    }
+
+    function handleJsonPlaceholder() {
+        callJsonPlaceholder();
     }
 
     return(
@@ -123,6 +150,8 @@ function SchedulerForm() {
 
                 <input type="submit" value="Submit" />
             </form>
+
+            <button onClick={callJsonPlaceholder}>JSON API TEST</button>
         </div>
     )
 }
