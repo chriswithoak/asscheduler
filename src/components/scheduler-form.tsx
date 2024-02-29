@@ -151,7 +151,7 @@ function SchedulerForm() {
                 <input type="submit" value="Submit" />
             </form>
 
-            <button onClick={callJsonPlaceholder}>JSON API TEST</button>
+            <button onClick={handleJsonPlaceholder}>JSON API TEST</button>
         </div>
     )
 }
