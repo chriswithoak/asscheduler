@@ -11,16 +11,22 @@ import config from "../config/config";
 
 const apiService = axios.create({
   baseURL: config.API_BASE_URL,
+  headers: {
+     'Access-Control-Allow-Origin': '*',
+     'access-control-allow-methods': '*',
+     'content-type': 'application/json',
+     'accept': 'application/json; charset=utf-8',
+  }
 });
 
 export const getAuthToken = async () => {
   try {
     var body = {
       UserName: config.USERNAME,
-      UserPassword: config.PASSWORD,
+      UserPassword: config.PASSWORD
     };
 
-    const response = await apiService.post( "/ServiceModel/AuthService.svc/Login", body );
+    const response = await apiService.post( "/ServiceModel/AuthService.svc/Login", body);
     return response.data;
   } catch (error) {
     throw error;

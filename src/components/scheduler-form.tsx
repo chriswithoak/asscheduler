@@ -25,13 +25,35 @@ function SchedulerForm() {
     // API CALLS
     async function callAuthToken() {
         try {
-            // const result = await getAuthToken();
             const result = await getAuthToken();
             console.log(result);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
     }
+
+    async function callAuthTokenFetch() {
+        try {
+            const response = await fetch("https://dev-anthonysylvan.creatio.com/ServiceModel/AuthService.svc/Login", {
+                method: "POST", // or 'PUT'
+                headers: {
+                    "Content-Type": "application/json",
+                    'accept': 'application/json; charset=utf-8',
+                    'Access-Control-Allow-Origin': '*',
+                    'access-control-allow-methods': '*',
+                },
+                body: JSON.stringify( {
+                    UserName: "andrew.keller@chartis.io",
+                    UserPassword: "Welc0Me$1"
+                }),
+            });
+            const test = await response.json();
+            console.log(test);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+
 
     async function callJsonPlaceholder() {
         try {
@@ -51,6 +73,10 @@ function SchedulerForm() {
 
     function handleJsonPlaceholder() {
         callJsonPlaceholder();
+    }
+
+    function handleFetchAPI() {
+        callAuthTokenFetch();
     }
 
     return(
@@ -150,6 +176,7 @@ function SchedulerForm() {
 
                 <input type="submit" value="Submit" />
             </form>
+            <button onClick={handleFetchAPI}>FETCH API TEST</button>
 
             <button onClick={handleJsonPlaceholder}>JSON API TEST</button>
         </div>
