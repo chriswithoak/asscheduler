@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { getAuthToken, getDummyData } from '../services/api-service'
 
 function SchedulerForm() {
@@ -79,9 +79,19 @@ function SchedulerForm() {
         callAuthTokenFetch();
     }
 
+    const [data, setData] = useState('');
+
+    useEffect(() => {
+        (async function () {
+        const { text } = await( await fetch(`/api/authToken`)).json();
+        setData(JSON.stringify(text));
+        })();
+    });
+
     return(
         <div className="as-form">
             <span className="required-note">All fields are required unless marked optional</span>
+            <span className="required-note">{data}</span>
 
             <form onSubmit={handleSubmit}>
                 <div className="input-group">
