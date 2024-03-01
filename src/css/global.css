@@ -67,3 +67,7 @@ header.as-header {
     width: fit-content;
     font-weight: 400;
 }
+
+.email-list {
+    overflow-wrap: break-word;
+}

@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react'
-import { getAuthToken, getDummyData } from '../services/api-service'
+import React, { useState } from 'react'
+import { getAuthToken, getConsultants} from '../services/api-service'
+import { setServers } from 'dns';
 
 function SchedulerForm() {
+    const [consultants, setConsultants] = useState();
     const [inputField , setInputField] = useState({
         firstName: '',
         lastName: '',
@@ -18,82 +20,26 @@ function SchedulerForm() {
         newsletter: ''
     })
 
+    // EVENT HANDLERS
     function inputHandler( e: any ) {
         setInputField( { ...inputField, [e.target.name]: e.target.value } )
     }
 
-    // API CALLS
-    async function callAuthToken() {
-        try {
-            const result = await getAuthToken();
-            console.log(result);
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
+    const submitHandler = async ( e:any ) => {
+        e.preventDefault();
+
+        const authToken = await getAuthToken();
+        const token = authToken['set-cookie'].join('; ');
+        const consultants = await getConsultants( token, inputField.zipCode );
+        setConsultants( consultants );
     }
-
-    async function callAuthTokenFetch() {
-        try {
-            const response = await fetch("https://dev-anthonysylvan.creatio.com/ServiceModel/AuthService.svc/Login", {
-                method: "POST", // or 'PUT'
-                headers: {
-                    "Content-Type": "application/json",
-                    'accept': 'application/json; charset=utf-8',
-                    'Access-Control-Allow-Origin': '*',
-                    'access-control-allow-methods': '*',
-                },
-                body: JSON.stringify( {
-                    UserName: "andrew.keller@chartis.io",
-                    UserPassword: "Welc0Me$1"
-                }),
-            });
-            const test = await response.json();
-            console.log(test);
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
-    }
-
-
-    async function callJsonPlaceholder() {
-        try {
-            // const result = await getAuthToken();
-            const result = await getDummyData();
-            console.log(result);
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
-    }
-
-    const handleSubmit = ( e:any ) => {
-        callAuthToken()
-        console.log(inputField)
-        e.preventDefault()
-    }
-
-    function handleJsonPlaceholder() {
-        callJsonPlaceholder();
-    }
-
-    function handleFetchAPI() {
-        callAuthTokenFetch();
-    }
-
-    const [data, setData] = useState('');
-
-    useEffect(() => {
-        (async function () {
-        const { text } = await( await fetch(`/api/authToken`)).json();
-        setData(JSON.stringify(text));
-        })();
-    });
-
+    
     return(
         <div className="as-form">
             <span className="required-note">All fields are required unless marked optional</span>
-            <span className="required-note">{data}</span>
+            <span className='email-list'>{ JSON.stringify(consultants) }</span>
 
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={submitHandler}>
                 <div className="input-group">
                     <label htmlFor='first-name'> First Name </label>
                     <input type="text" name="firstName" id="first-name" autoComplete='on' onChange={inputHandler} value={inputField.firstName}/>
@@ -186,9 +132,6 @@ function SchedulerForm() {
 
                 <input type="submit" value="Submit" />
             </form>
-            <button onClick={handleFetchAPI}>FETCH API TEST</button>
-
-            <button onClick={handleJsonPlaceholder}>JSON API TEST</button>
         </div>
     )
 }
