@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { getAuthToken, getConsultants} from '../services/api-service'
-import { setServers } from 'dns';
 
 function SchedulerForm() {
     const [consultants, setConsultants] = useState();
