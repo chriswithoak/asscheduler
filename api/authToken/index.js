@@ -1,18 +1,16 @@
-const axios = require("axios");
+const axiosInstance = require('../config/axiosInstance');
+const config = require('../config/config');
 
 module.exports = async function (context, req) {
   try {
     var body = {
-        UserName: "andrew.keller@chartis.io",
-        UserPassword: "Welc0Me$1"
+        UserName: config.USERNAME,
+        UserPassword: config.PASSWORD
     };
 
-    const response = await axios.post(
-      "https://dev-anthonysylvan.creatio.com/ServiceModel/AuthService.svc/Login",
-      body
-    );
-
-    context.res.json(response.data);
+    const response = await axiosInstance.post("/ServiceModel/AuthService.svc/Login", body);
+    
+    context.res.json(response.headers);
   } catch (error) {
     throw error;
   }
