@@ -55,7 +55,8 @@ header.as-header {
 
 
 .input-group textarea,
-.input-group input {
+.input-group input,
+.input-group select {
     width: 100%;
     border: 1px solid #000;
     padding: 10px;
