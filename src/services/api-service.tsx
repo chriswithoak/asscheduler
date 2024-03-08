@@ -43,3 +43,12 @@ export const selectSource = async ( headers: any, sourceModel: any ) => {
     throw error;
   }
 };
+
+export const insertSource = async ( headers: any, sourceModel: any ) => {
+  try {
+    const response = await axiosInstance.post( `/api/source-insert?bpmcsrf=${headers.bpmcsrf}&cookies=${headers.cookies}`, sourceModel );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
