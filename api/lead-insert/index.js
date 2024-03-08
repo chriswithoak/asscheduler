@@ -1,9 +1,9 @@
 const axiosInstance = require('../config/axiosInstance');
-const leadSelectPayload = require('../utils/leadSelectPayload');
+const leadInsertPayload = require('../utils/leadInsertPayload');
 
 module.exports = async function (context, req) {
   try {
-    const body = leadSelectPayload(req.body);
+    const body = leadInsertPayload(req.body);
     console.log(JSON.stringify(body));
 
     const response = await axiosInstance.post("/0/DataService/json/SyncReply/InsertQuery", body, {
