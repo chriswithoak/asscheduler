@@ -20,6 +20,7 @@ function SchedulerForm() {
         phone: '',
         interest: '', //GUID
         referral: '',
+        referrerName: '',
         message: '',
         newsletter: '',
         poolType: '', //GUID
@@ -49,9 +50,9 @@ function SchedulerForm() {
         setConsultants( consultants );
 
         // Lead Model
-        // var leadModel = await buildLeadModel(headers);
-        // const res = await insertLeads( headers, leadModel );
-        // console.log(res);
+        var leadModel = await buildLeadModel(headers);
+        const res = await insertLeads( headers, leadModel );
+        console.log(res);
 
         setShowLoader(false);
         setFormSubmitted(true);
@@ -253,6 +254,14 @@ function SchedulerForm() {
                         </label>
                     </div>
                 </div>
+
+                { 
+                    leadInfo.referral === 'yes' &&
+                    <div className="input-group size-half-block">
+                        <label htmlFor='referrer-name'> If yes, enter customer name.* </label>
+                        <input type="text" name="referrerName" id="referrer-name" onChange={inputHandler} value={leadInfo.referrerName} required/>
+                    </div>
+                }
 
                 <div className="input-group size-full">
                     <label htmlFor='message'> Is there anything else we should know, to best meet your needs? </label>
