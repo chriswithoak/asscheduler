@@ -1,14 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+/* TEMPORARY CDN */
+@import url('https://fonts.cdnfonts.com/css/palatino');
+
 * {
     box-sizing: border-box;
 }
 
 .as-scheduler {
-    background: #ebebeb;
+    font-family: "Poppins";
 }
 
+.as-header h2 {
+    font-family: "Palatino";
+    font-size: 48px;
+    font-weight: 400;
+    margin: 0px;
+    margin-bottom: 30px;
+}
+
+.confirmation h2 {
+    font-size: 70px;
+    font-weight: 700;
+    margin: 0px;
+    text-transform: uppercase;
+    line-height: 1;
+}
+
+.as-header p {
+    font-size: 18px;
+    font-family: "Poppins";
+}
+
+.as-scheduler {
+    background: #F2F2F2;
+    color: #132644;
+    position: relative;
+}
+
+.confirmation,
 header.as-header {
     padding: 40px;
-    border-bottom: 1px solid black;
+    text-align: center;
+    max-width: 680px;
+    margin: 0 auto;
 }
 
 .as-form {
@@ -18,21 +53,37 @@ header.as-header {
 .as-form form {
     display: flex;
     flex-wrap: wrap;
-    gap: 30px;
+    gap: 32px;
 }
 
+.newsletter,
 .required-note {
-    font-style: italic;
     display: block;
-    margin-bottom: 30px;
+    font-family: "Poppins";
+    font-size: 12px;
+    font-weight: 400;
 }
 
 .as-form input[type="submit"] {
-    padding: 10px 20px;
+    padding: 15px 40px;
     font-weight: bold;
-    font-size: 16px;
-    border-radius: 0px;
-    border: 1px solid #000;
+    font-size: 18px;
+    border-radius: 10px;
+    background: #132644;
+    color: #fff;
+    font-family: "Poppins";
+    max-width: 200px;
+    width: 100%;
+    margin: 0 auto;
+    border: 2px solid transparent;
+    transition: 0.3s ease all;
+    cursor: pointer;
+}
+
+.as-form input[type="submit"]:hover {
+    border: 2px solid #132644;
+    background: transparent;
+    color: #132644;
 }
 
 .input-group {
@@ -49,16 +100,19 @@ header.as-header {
 
 .input-group label {
     display: block;
-    font-weight: 600;
     margin-bottom: 8px;
 }
 
-
-.input-group textarea,
-.input-group input,
+.input-group input:not([type='checkbox']):not([type='radio']),
 .input-group select {
+    height: 40px;
+}
+
+.input-group input,
+.input-group select,
+.input-group textarea {
     width: 100%;
-    border: 1px solid #000;
+    border: none;
     padding: 10px;
 }
 
@@ -69,6 +123,117 @@ header.as-header {
     font-weight: 400;
 }
 
+.input-group.size-half-block {
+    flex-basis: 100%;
+}
+
+.size-half-block input:not([type='radio']) {
+    width: calc(50% - 21px);
+}
+
 .email-list {
     overflow-wrap: break-word;
+}
+
+.calendar {
+    width: 100%; 
+}
+/* CUSTOM CHECKBOX */
+.check-option {
+    margin-bottom: 13px;
+}
+
+.container {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.container input {
+    position: absolute;
+    cursor: pointer;
+    left: 0;
+    z-index: -999;
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background-color: #fff;
+    border-radius: 2px;
+}
+
+.container input:checked~.checkmark {
+    background-color: #132644;
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.container input:checked~.checkmark:after {
+    display: block;
+}
+
+.container .checkmark:after {
+    left: 7px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+/* LOADER */
+.loader-overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: rgb(242 242 242 / 80%);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.loader-overlay h3{
+    font-size: 30px;
+}
+
+.loader {
+    width: 150px;
+    height: 150px;
+    border: 15px solid #FFF;
+    border-bottom-color: #132644;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }

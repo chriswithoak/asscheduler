@@ -1,8 +1,12 @@
 import React, { useState } from 'react'
+import Confirmation from './confirmation'
+import Loader from './loader'
 import { getAuthToken, getConsultants, insertLeads } from '../services/api-service'
 import { getSourceId } from '../utils/sourceHelpers'
 
 function SchedulerForm() {
+    const [formSubmitted, setFormSubmitted] = useState(false);
+    const [showLoader, setShowLoader] = useState(false);
     const [consultants, setConsultants] = useState();
     const [leadInfo , setLeadInfo] = useState({
         firstName: '',
@@ -35,6 +39,7 @@ function SchedulerForm() {
 
     const submitHandler = async ( e:any ) => {
         e.preventDefault();
+        setShowLoader(true);
 
         // Headers
         const headers = await getAuthHeaders();
@@ -47,6 +52,9 @@ function SchedulerForm() {
         var leadModel = await buildLeadModel(headers);
         const res = await insertLeads( headers, leadModel );
         console.log(res);
+
+        setShowLoader(false);
+        setFormSubmitted(true);
     }
 
     // FUNCTIONS
@@ -92,24 +100,28 @@ function SchedulerForm() {
     }
 
     return(
+        <>
+
+        {showLoader && <Loader />}
+        
+        {!formSubmitted && 
         <div className="as-form">
-            <span className="required-note">All fields are required unless marked optional</span>
             <span className='email-list'>{ JSON.stringify(consultants) }</span>
 
             <form onSubmit={submitHandler}>
                 <div className="input-group">
-                    <label htmlFor='first-name'> First Name </label>
-                    <input type="text" name="firstName" id="first-name" autoComplete='on' onChange={inputHandler} value={leadInfo.firstName}/>
+                    <label htmlFor='first-name'> First Name* </label>
+                    <input type="text" name="firstName" id="first-name" autoComplete='on' onChange={inputHandler} value={leadInfo.firstName} required/>
                 </div>
 
                 <div className="input-group">
-                    <label htmlFor='last-name'> Last Name </label>
-                    <input type="text" name="lastName" id="last-name" onChange={inputHandler} value={leadInfo.lastName} />
+                    <label htmlFor='last-name'> Last Name* </label>
+                    <input type="text" name="lastName" id="last-name" onChange={inputHandler} value={leadInfo.lastName} required/>
                 </div>
 
                 <div className="input-group">
-                    <label htmlFor='street-address'> Street Address </label>
-                    <input type="text" name="streetAddress" id="street-address" autoComplete='on' onChange={inputHandler} value={leadInfo.streetAddress} />
+                    <label htmlFor='street-address'> Street Address* </label>
+                    <input type="text" name="streetAddress" id="street-address" autoComplete='on' onChange={inputHandler} value={leadInfo.streetAddress} required/>
                 </div>
 
                 <div className="input-group">
@@ -118,13 +130,13 @@ function SchedulerForm() {
                 </div>
 
                 <div className="input-group">
-                    <label htmlFor='city'> City </label>
-                    <input type="text" name="city" id="city" onChange={inputHandler} value={leadInfo.city} />
+                    <label htmlFor='city'> City* </label>
+                    <input type="text" name="city" id="city" onChange={inputHandler} value={leadInfo.city} required/>
                 </div>
 
                 <div className="input-group size-short">
-                    <label htmlFor='state'> State </label>
-                    <select name="state"  id="state" onChange={inputHandler} value={leadInfo.state}>
+                    <label htmlFor='state'> State* </label>
+                    <select name="state"  id="state" onChange={inputHandler} value={leadInfo.state} required>
                         <option value=""> Select State </option>
                         <option value="AL"> Alabama </option>
                         <option value="AK"> Alaska </option>
@@ -187,68 +199,85 @@ function SchedulerForm() {
                 </div>
 
                 <div className="input-group size-short">
-                    <label htmlFor='zip-code'> Zip Code </label>
-                    <input type="text" name="zipCode" id="zip-code" onChange={inputHandler} value={leadInfo.zipCode} />
+                    <label htmlFor='zip-code'> Zip Code* </label>
+                    <input type="text" name="zipCode" id="zip-code" onChange={inputHandler} value={leadInfo.zipCode} required/>
                 </div>
 
-                <div className="input-group">
-                    <label htmlFor='email'> Email </label>
-                    <input type="email" name="email" id="email" autoComplete='on' onChange={inputHandler} value={leadInfo.email} />
+                <div className="input-group size-half-block">
+                    <label htmlFor='email'> Email* </label>
+                    <input type="email" name="email" id="email" autoComplete='on' onChange={inputHandler} value={leadInfo.email} required/>
                 </div>
 
-                <div className="input-group">
-                    <label htmlFor='phone'> Phone Number </label>
-                    <input name="phone" id="phone" type="tel" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"  autoComplete='on' onChange={inputHandler} value={leadInfo.phone} />
+                <div className="input-group size-half-block">
+                    <label htmlFor='phone'> Phone Number* </label>
+                    <input name="phone" id="phone" type="tel" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" placeholder="XXX-XX-XXX" autoComplete='on' onChange={inputHandler} value={leadInfo.phone} required/>
                 </div>
 
-                <div className="input-group">
-                    <label> What are you interested in? </label>
+                <div className="input-group size-half-block">
+                    <label> What are you interested in?* </label>
 
                     <div className="check-option">
-                        <input type="radio" name="interest" value="new-pool-spa" id="new-pool-spa" onChange={inputHandler} />
-                        <label htmlFor='new-pool-spa'> Build a New Pool and/or Spa </label>
+                        <label className="container">Build a New Pool and/or Spa
+                            <input type="radio" name="interest" value="new-pool-spa" id="new-pool-spa" onChange={inputHandler} required/>
+                            <span className="checkmark"></span>
+                        </label>
                     </div>
                     
                     <div className="check-option">
-                        <input type="radio" name="interest" value="renovate-pool-spa" id="renovate-pool-spa" onChange={inputHandler} />
-                        <label htmlFor='renovate-pool-spa'> Renovate an Existing Pool or Spa </label>
+                        <label className="container">Renovate an Existing Pool or Spa
+                            <input type="radio" name="interest" value="renovate-pool-spa" id="renovate-pool-spa" onChange={inputHandler} />
+                            <span className="checkmark"></span>
+                        </label>
                     </div>
 
                     <div className="check-option">
-                        <input type="radio" name="interest" value="backyard-offerings" id="backyard-offerings" onChange={inputHandler} />
-                        <label htmlFor='backyard-offerings'> Backyard Offerings </label>
+                        <label className="container">Backyard Offerings
+                            <input type="radio" name="interest" value="backyard-offerings" id="backyard-offerings" onChange={inputHandler} />
+                            <span className="checkmark"></span>
+                        </label>
                     </div>
                 </div>
 
-                <div className="input-group">
-                    <label> Where you referred by Anthony & Sylvan Customer? </label>
+                <div className="input-group size-half-block">
+                    <label> Where you referred by Anthony & Sylvan Customer?* </label>
 
                     <div className="check-option">
-                        <input type="radio" name="referral" value="yes" id="referral-yes" onChange={inputHandler} />
-                        <label htmlFor='referral-yes'> Yes </label>
+                        <label className="container">Yes
+                            <input type="radio" name="referral" value="yes" id="referral-yes" onChange={inputHandler} required/>
+                            <span className="checkmark"></span>
+                        </label>
                     </div>
                     
                     <div className="check-option">
-                        <input type="radio" name="referral" value="no" id="referral-no" onChange={inputHandler} />
-                        <label htmlFor='referral-no'> No </label>
+                        <label className="container">No
+                            <input type="radio" name="referral" value="no" id="referral-no" onChange={inputHandler} />
+                            <span className="checkmark"></span>
+                        </label>
                     </div>
                 </div>
 
                 <div className="input-group size-full">
-                    <label htmlFor='message'> Is there anything else we should know to best meet your needs? </label>
+                    <label htmlFor='message'> Is there anything else we should know, to best meet your needs? </label>
                     <textarea name="message" id="message" rows={10} onChange={inputHandler} value={leadInfo.message} />
                 </div>
 
                 <div className="input-group size-full">
                     <div className="check-option">
-                        <input type="checkbox" name="newsletter" value="yes" id="newsletter" onChange={inputHandler} />
-                        <label htmlFor='newsletter'> Yes, I would like to receive Anthony & Sylvan's newsletter, special offers and promotions. </label>
+                        <label className="container newsletter">Yes, I would like to receive Anthony & Sylvan's newsletter, special offers and promotions.
+                            <input type="checkbox" name="newsletter" value="yes" id="newsletter" onChange={inputHandler} />
+                            <span className="checkmark"></span>
+                        </label>
                     </div>
                 </div>
 
-                <input type="submit" value="Submit" />
+                <input type="submit" value="SEND" className='form-submit'/>
             </form>
         </div>
+        }
+
+        {formSubmitted && <Confirmation />}
+
+        </>
     )
 }
 
