@@ -49,9 +49,9 @@ function SchedulerForm() {
         setConsultants( consultants );
 
         // Lead Model
-        var leadModel = await buildLeadModel(headers);
-        const res = await insertLeads( headers, leadModel );
-        console.log(res);
+        // var leadModel = await buildLeadModel(headers);
+        // const res = await insertLeads( headers, leadModel );
+        // console.log(res);
 
         setShowLoader(false);
         setFormSubmitted(true);
@@ -106,8 +106,6 @@ function SchedulerForm() {
         
         {!formSubmitted && 
         <div className="as-form">
-            <span className='email-list'>{ JSON.stringify(consultants) }</span>
-
             <form onSubmit={submitHandler}>
                 <div className="input-group">
                     <label htmlFor='first-name'> First Name* </label>
@@ -275,7 +273,7 @@ function SchedulerForm() {
         </div>
         }
 
-        {formSubmitted && <Confirmation />}
+        {formSubmitted && <Confirmation consultants={consultants}/>}
 
         </>
     )
