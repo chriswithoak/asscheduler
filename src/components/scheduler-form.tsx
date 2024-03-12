@@ -209,7 +209,7 @@ function SchedulerForm() {
 
                 <div className="input-group size-half-block">
                     <label htmlFor='phone'> Phone Number* </label>
-                    <input name="phone" id="phone" type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="XXX-XXX-XXXX" autoComplete='on' onChange={inputHandler} value={leadInfo.phone} required/>
+                    <input name="phone" id="phone" type="tel" placeholder="XXX-XXX-XXXX" autoComplete='on' onChange={inputHandler} value={leadInfo.phone} required/>
                 </div>
 
                 <div className="input-group size-half-block">
