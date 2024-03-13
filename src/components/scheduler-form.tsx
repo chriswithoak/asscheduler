@@ -27,10 +27,10 @@ function SchedulerForm() {
         shortCode: 'Test Shortcode',
         leadMedium: 'b06a29cb-e78d-4daa-8767-467a92d35da8',
         leadSource: '69eca55d-41cf-4879-a2c2-92615574cdbf',
-        utmCampaign: 'Test UTM Campaign',
-        utmMedium: 'Test UTM Medium',
-        utmSource: 'Test UTM Source',
-        adSrc: 'Test AdSrc'
+        utmCampaign: '',
+        utmMedium: '',
+        utmSource: '',
+        adSrc: ''
     });
 
     // EVENT HANDLERS
@@ -40,22 +40,25 @@ function SchedulerForm() {
 
     const submitHandler = async ( e:any ) => {
         e.preventDefault();
-        setShowLoader(true);
+        getSessionUtmInfo();
 
-        // Headers
-        const headers = await getAuthHeaders();
+        console.log(leadInfo);
+        // setShowLoader(true);
 
-        // Consultants
-        const consultants = await getConsultants( headers, leadInfo.zipCode );
-        setConsultants( consultants );
+        // // Headers
+        // const headers = await getAuthHeaders();
 
-        // Lead Model
-        var leadModel = await buildLeadModel(headers);
-        const res = await insertLeads( headers, leadModel );
-        console.log(res);
+        // // Consultants
+        // const consultants = await getConsultants( headers, leadInfo.zipCode );
+        // setConsultants( consultants );
 
-        setShowLoader(false);
-        setFormSubmitted(true);
+        // // Lead Model
+        // var leadModel = await buildLeadModel(headers);
+        // const res = await insertLeads( headers, leadModel );
+        // console.log(res);
+
+        // setShowLoader(false);
+        // setFormSubmitted(true);
     }
 
     // FUNCTIONS
@@ -98,6 +101,13 @@ function SchedulerForm() {
             cookies: headerCookie,
             bpmcsrf: headerBpmcsrf
         };
+    }
+
+    const getSessionUtmInfo = () => {
+        leadInfo.utmCampaign = sessionStorage.getItem('utm_campaign') ?? leadInfo.utmCampaign;
+        leadInfo.utmMedium = sessionStorage.getItem('utm_medium') ?? leadInfo.utmMedium;
+        leadInfo.utmSource = sessionStorage.getItem('utm_source') ?? leadInfo.utmSource;
+        leadInfo.adSrc = sessionStorage.getItem('AdSrc') ?? leadInfo.adSrc;
     }
 
     return(
