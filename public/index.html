@@ -17,15 +17,4 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
   </body>
-
-  <script>
-    window.addEventListener("message", ( event ) => {
-      if (event.origin !== "https://oakdevsandbox.wpenginepowered.com/") return;
-
-      sessionStorage.setItem("utm_campaign", event.data.utm_campaign);
-      sessionStorage.setItem("utm_medium", event.data.utm_medium);
-      sessionStorage.setItem("utm_source", event.data.utm_source);
-      sessionStorage.setItem("AdSrc", event.data.AdSrc);
-    });
-  </script>
 </html>
