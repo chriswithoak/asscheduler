@@ -20,7 +20,7 @@
 
   <script>
     window.addEventListener("message", ( event ) => {
-      if (event.origin !== "http://localhost:3000") return;
+      if (event.origin !== "https://oakdevsandbox.wpenginepowered.com/") return;
 
       sessionStorage.setItem("utm_campaign", event.data.utm_campaign);
       sessionStorage.setItem("utm_medium", event.data.utm_medium);
