@@ -6,7 +6,7 @@ import SchedulerForm from './components/scheduler-form';
 function App() {
 
   const handleMessageEvent = ( event:any ) => {
-    if (event.origin !== "https://oakdevsandbox.wpenginepowered.com/") return;
+    if (event.origin !== "https://oakdevsandbox.wpenginepowered.com") return;
 
     sessionStorage.setItem("utm_campaign", event.data.utm_campaign);
     sessionStorage.setItem("utm_medium", event.data.utm_medium);
