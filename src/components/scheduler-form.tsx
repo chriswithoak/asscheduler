@@ -40,25 +40,27 @@ function SchedulerForm() {
 
     const submitHandler = async ( e:any ) => {
         e.preventDefault();
+
+        setShowLoader(true);
+
+        // Get UTM Info
         getSessionUtmInfo();
-
         console.log(leadInfo);
-        // setShowLoader(true);
 
-        // // Headers
-        // const headers = await getAuthHeaders();
+        // Headers
+        const headers = await getAuthHeaders();
 
-        // // Consultants
-        // const consultants = await getConsultants( headers, leadInfo.zipCode );
-        // setConsultants( consultants );
+        // Consultants
+        const consultants = await getConsultants( headers, leadInfo.zipCode );
+        setConsultants( consultants );
 
-        // // Lead Model
-        // var leadModel = await buildLeadModel(headers);
-        // const res = await insertLeads( headers, leadModel );
-        // console.log(res);
+        // Lead Model
+        var leadModel = await buildLeadModel(headers);
+        const res = await insertLeads( headers, leadModel );
+        console.log(res);
 
-        // setShowLoader(false);
-        // setFormSubmitted(true);
+        setShowLoader(false);
+        setFormSubmitted(true);
     }
 
     // FUNCTIONS
