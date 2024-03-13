@@ -237,3 +237,22 @@ header.as-header {
         transform: rotate(360deg);
     }
 }
+
+/* MOBILE RESPONSIVE */
+@media only screen and (max-width: 767px) {
+    .input-group {
+        flex-basis: 100%;
+    }
+
+    .size-half-block input:not([type='radio']) {
+        width: 100%;
+    }
+
+    .as-header h2 {
+        font-size: 32px;
+    }
+
+    .as-header p {
+        font-size: 16px;
+    }
+}
