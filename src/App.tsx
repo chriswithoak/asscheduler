@@ -15,7 +15,7 @@ function App() {
   }
 
   useEffect(() => {
-    window.addEventListener("onmessage", handleMessageEvent);
+    window.addEventListener("message", handleMessageEvent);
   }, []);
 
   return (
