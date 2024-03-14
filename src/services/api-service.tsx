@@ -52,3 +52,12 @@ export const insertSource = async ( headers: any, sourceModel: any ) => {
     throw error;
   }
 };
+
+export const verifyAddress = async ( leadModel: any ) => {
+  try {
+    const response = await axiosInstance.post( `/api/address-verify`, leadModel );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

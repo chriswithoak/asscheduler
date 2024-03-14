@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import Confirmation from './confirmation'
 import Loader from './loader'
-import { getAuthToken, getConsultants, insertLeads } from '../services/api-service'
+import { getAuthToken, getConsultants, insertLeads, verifyAddress } from '../services/api-service'
 import { getSourceId } from '../utils/sourceHelpers'
+import { sanitizeInput } from '../utils/generalHelpers'
 
 function SchedulerForm() {
     const [formSubmitted, setFormSubmitted] = useState(false);
@@ -40,12 +41,13 @@ function SchedulerForm() {
 
     const submitHandler = async ( e:any ) => {
         e.preventDefault();
-
         setShowLoader(true);
+
+        // Sanitize Address
+        sanitizeAddress();
 
         // Get UTM Info
         getSessionUtmInfo();
-        console.log(leadInfo);
 
         // Headers
         const headers = await getAuthHeaders();
@@ -54,8 +56,13 @@ function SchedulerForm() {
         const consultants = await getConsultants( headers, leadInfo.zipCode );
         setConsultants( consultants );
 
+        // Address Validation
+        await validateAddress();
+
         // Lead Model
         var leadModel = await buildLeadModel(headers);
+        console.log("LEAD MODEL: ", leadModel );
+
         const res = await insertLeads( headers, leadModel );
         console.log(res);
 
@@ -110,6 +117,39 @@ function SchedulerForm() {
         leadInfo.utmMedium = sessionStorage.getItem('utm_medium') ?? leadInfo.utmMedium;
         leadInfo.utmSource = sessionStorage.getItem('utm_source') ?? leadInfo.utmSource;
         leadInfo.adSrc = sessionStorage.getItem('AdSrc') ?? leadInfo.adSrc;
+    }
+
+    const validateAddress = async () => {
+        const result = await verifyAddress( leadInfo );
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(result,"text/xml");
+
+        if ( xmlDoc.getElementsByTagName("Error").length <= 0 ) {
+            const avResponseXml = xmlDoc.getElementsByTagName("AddressValidateResponse")[0];
+            const addressXml = avResponseXml.getElementsByTagName("Address")[0];
+
+            if ( addressXml.getElementsByTagName("Address2").length > 0 ) {
+                leadInfo.streetAddress = addressXml.getElementsByTagName("Address2")[0].innerHTML;
+                leadInfo.addressLine2 = "";
+            }
+
+            leadInfo.state = addressXml.getElementsByTagName("State")[0].innerHTML;
+            leadInfo.city = addressXml.getElementsByTagName("City")[0].innerHTML;
+            leadInfo.zipCode = addressXml.getElementsByTagName("Zip5")[0].innerHTML;
+        } else {
+            leadInfo.message += `\r\n \r\n USPS Validation Error: `;
+            leadInfo.message += `\r\n Address given was Address1: ${leadInfo.streetAddress} | Address2: ${leadInfo.addressLine2}`;
+
+            leadInfo.streetAddress = "";
+            leadInfo.addressLine2 = "";
+        }
+    }
+
+    const sanitizeAddress = () => {
+        leadInfo.streetAddress = sanitizeInput(leadInfo.streetAddress);
+        leadInfo.addressLine2 = sanitizeInput(leadInfo.addressLine2);
+        leadInfo.city = sanitizeInput(leadInfo.city);
+        leadInfo.zipCode = sanitizeInput(leadInfo.zipCode);
     }
 
     return(
