@@ -71,8 +71,8 @@ function SchedulerForm() {
         // Lead Model
         var leadModel = await buildLeadModel(headers);
         const res = await insertLeads( headers, leadModel );
-
         //TODO: Add result validation
+        console.log(res);
 
         setShowLoader(false);
         setFormSubmitted(true);
