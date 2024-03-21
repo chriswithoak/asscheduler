@@ -13,7 +13,7 @@ function Confirmation(props:any) {
                 </>
                :
                 <>
-                    <h2>Sorry, we don't currently server your area.</h2>
+                    <h2>Sorry, we don't currently serve your area.</h2>
                     <p> We will keep your information on file and will reach out if we begin servicing your area in the future.</p>
                 </>
             }

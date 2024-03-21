@@ -5,8 +5,7 @@ import { getAuthToken, getConsultants, insertLeads, verifyAddress } from '../ser
 import { getSourceId } from '../utils/sourceHelpers'
 import { sanitizeInput } from '../utils/generalHelpers'
 
-function SchedulerForm() {
-    const [formSubmitted, setFormSubmitted] = useState(false);
+function SchedulerForm( props:any ) {
     const [showLoader, setShowLoader] = useState(false);
     const [consultants, setConsultants] = useState();
     const [leadInfo , setLeadInfo] = useState({
@@ -75,7 +74,7 @@ function SchedulerForm() {
         console.log(res);
 
         setShowLoader(false);
-        setFormSubmitted(true);
+        props.liftFormSubmittedState(true);
     }
 
     // FUNCTIONS
@@ -164,7 +163,7 @@ function SchedulerForm() {
         <>
         {showLoader && <Loader />}
         
-        {!formSubmitted && 
+        {!props.formSubmitted && 
         <div className="as-form">
             <form onSubmit={submitHandler}>
                 <div className="input-group">
@@ -341,7 +340,7 @@ function SchedulerForm() {
         </div>
         }
 
-        {formSubmitted && <Confirmation consultants={consultants}/>}
+        {props.formSubmitted && <Confirmation consultants={consultants}/>}
 
         </>
     )
