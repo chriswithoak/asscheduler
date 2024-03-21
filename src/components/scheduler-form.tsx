@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Confirmation from './confirmation'
 import Loader from './loader'
 import { getAuthToken, getConsultants, insertLeads, verifyAddress } from '../services/api-service'
@@ -34,6 +34,15 @@ function SchedulerForm() {
         adSrc: ''
     });
 
+    useEffect(() => {
+        if ( showLoader === true) {
+            const loader = document.querySelector('#loader');
+            if (loader) {
+                loader.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+    }, [showLoader]);
+
     // EVENT HANDLERS
     const inputHandler = ( e: any ) => {
         setLeadInfo( { ...leadInfo, [e.target.name]: e.target.value } )
@@ -61,10 +70,9 @@ function SchedulerForm() {
 
         // Lead Model
         var leadModel = await buildLeadModel(headers);
-        console.log("LEAD MODEL: ", leadModel );
-
         const res = await insertLeads( headers, leadModel );
-        console.log(res);
+
+        //TODO: Add result validation
 
         setShowLoader(false);
         setFormSubmitted(true);
@@ -154,7 +162,6 @@ function SchedulerForm() {
 
     return(
         <>
-
         {showLoader && <Loader />}
         
         {!formSubmitted && 
