@@ -335,7 +335,10 @@ function SchedulerForm( props:any ) {
                     </div>
                 </div>
 
-                <input type="submit" value="SEND" className='form-submit'/>
+                <div>
+                    <div className="g-recaptcha" data-sitekey="6LdpA_kdAAAAAGEpTjhAxHefqWbzDtpHOyruXZdB"></div>
+                    <input type="submit" value="SEND" className='form-submit'/>
+                </div>
             </form>
         </div>
         }

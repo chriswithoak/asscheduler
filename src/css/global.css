@@ -203,6 +203,10 @@ header.as-header {
     transform: rotate(45deg);
 }
 
+.g-recaptcha {
+    margin-bottom: 32px;
+}
+
 /* LOADER */
 .loader-overlay {
     position: absolute;
