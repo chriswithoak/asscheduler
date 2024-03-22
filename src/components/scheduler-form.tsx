@@ -3,7 +3,7 @@ import Confirmation from './confirmation'
 import Loader from './loader'
 import { getAuthToken, getConsultants, insertLeads, verifyAddress } from '../services/api-service'
 import { getSourceId } from '../utils/sourceHelpers'
-import { sanitizeInput } from '../utils/generalHelpers'
+import { sanitizeInput, handleNullText } from '../utils/generalHelpers'
 
 function SchedulerForm( props:any ) {
     const [showLoader, setShowLoader] = useState(false);
@@ -129,10 +129,10 @@ function SchedulerForm( props:any ) {
     }
 
     const getSessionUtmInfo = () => {
-        leadInfo.utmCampaign = sessionStorage.getItem('utm_campaign') ?? leadInfo.utmCampaign;
-        leadInfo.utmMedium = sessionStorage.getItem('utm_medium') ?? leadInfo.utmMedium;
-        leadInfo.utmSource = sessionStorage.getItem('utm_source') ?? leadInfo.utmSource;
-        leadInfo.adSrc = sessionStorage.getItem('AdSrc') ?? leadInfo.adSrc;
+        leadInfo.utmCampaign = handleNullText(sessionStorage.getItem('utm_campaign'));
+        leadInfo.utmMedium = handleNullText(sessionStorage.getItem('utm_medium'));
+        leadInfo.utmSource = handleNullText(sessionStorage.getItem('utm_source'));
+        leadInfo.adSrc = handleNullText(sessionStorage.getItem('AdSrc'));
     }
 
     const validateAddress = async () => {
