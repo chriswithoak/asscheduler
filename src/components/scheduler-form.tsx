@@ -25,8 +25,8 @@ function SchedulerForm( props:any ) {
         newsletter: '',
         poolType: '', //GUID
         shortCode: 'Test Shortcode',
-        leadMedium: 'b06a29cb-e78d-4daa-8767-467a92d35da8',
-        leadSource: '69eca55d-41cf-4879-a2c2-92615574cdbf',
+        leadMedium: '', //GUID
+        leadSource: '', //GUID
         utmCampaign: '',
         utmMedium: '',
         utmSource: '',
@@ -68,7 +68,7 @@ function SchedulerForm( props:any ) {
         await validateAddress();
 
         // Lead Model
-        var leadModel = await buildLeadModel(headers);
+        var leadModel = await setLeadGuids(headers);
         const res = await insertLeads( headers, leadModel );
         //TODO: Add result validation
         console.log(res);
@@ -78,13 +78,16 @@ function SchedulerForm( props:any ) {
     }
 
     // FUNCTIONS
-    const buildLeadModel = async ( headers: any ) => {
+    const setLeadGuids = async ( headers: any ) => {
         var model = {...leadInfo};
 
-        // Update GUIDS
+        // SET GUIDs
+
+        // Address
         model.city = await getSourceId(headers, "City", model.city );
         model.state = await getSourceId(headers, "Region", model.state );
 
+        // Interest and Pool Type
         if ( model.interest === "renovate-pool-spa" || model.interest === "backyard-offerings" ){
             model.interest = await getSourceId(headers, "LeadType", "Renovation");
             model.poolType = '8d7ac882-b141-456b-8ba9-d0c51cd5e1c2';
@@ -95,6 +98,12 @@ function SchedulerForm( props:any ) {
             model.interest = '4eb933c2-d7bb-4711-8d57-3e59c2bcdc0f';
             model.poolType = 'edec19b2-a695-4d9a-9e9e-b948cdd70cd1';
         }
+
+        // LeadSource and LeadMedium
+        model.leadSource = model.utmSource !== '' ? await getSourceId(headers, "LeadSource", model.utmSource.replace("&amp","&") ) : '69eca55d-41cf-4879-a2c2-92615574cdbf';
+        
+        var medium = model.utmMedium !== '' ? model.utmMedium.replace("&amp","&") : 'None';
+        model.leadMedium = await getSourceId(headers, "LeadMedium", medium );
 
         return model;
     }
