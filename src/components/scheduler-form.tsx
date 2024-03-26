@@ -62,12 +62,12 @@ function SchedulerForm( props:any ) {
         // Headers
         const headers = await getAuthHeaders();
 
+        // Address Validation
+        await validateAddress();
+
         // Consultants
         const consultants = await getConsultants( headers, leadInfo.zipCode );
         setConsultants( consultants );
-
-        // Address Validation
-        await validateAddress();
 
         // Lead Model
         var leadModel = await buildLeadModel(headers);
