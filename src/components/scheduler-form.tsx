@@ -24,7 +24,7 @@ function SchedulerForm( props:any ) {
         message: '',
         newsletter: '',
         poolType: '', //GUID
-        shortCode: 'Test Shortcode',
+        shortCode: '',
         leadMedium: '', //GUID
         leadSource: '', //GUID
         utmCampaign: '',
@@ -70,7 +70,7 @@ function SchedulerForm( props:any ) {
         await validateAddress();
 
         // Lead Model
-        var leadModel = await setLeadGuids(headers);
+        var leadModel = await buildLeadModel(headers);
         const res = await insertLeads( headers, leadModel );
         //TODO: Add result validation
         console.log(res);
@@ -80,8 +80,12 @@ function SchedulerForm( props:any ) {
     }
 
     // FUNCTIONS
-    const setLeadGuids = async ( headers: any ) => {
+    const buildLeadModel = async ( headers: any ) => {
         var model = {...leadInfo};
+
+        if (model.referral === "yes") {
+            model.message += `\r\n \r\nReferred By: ${leadInfo.referrerName}`;
+        }
 
         // SET GUIDs
 
@@ -102,10 +106,16 @@ function SchedulerForm( props:any ) {
         }
 
         // LeadSource and LeadMedium
-        model.leadSource = model.utmSource !== '' ? await getSourceId(headers, "LeadSource", model.utmSource.replace("&amp","&") ) : '69eca55d-41cf-4879-a2c2-92615574cdbf';
-        
-        var medium = model.utmMedium !== '' ? model.utmMedium.replace("&amp","&") : 'None';
-        model.leadMedium = await getSourceId(headers, "LeadMedium", medium );
+        model.leadSource = model.leadSource !== '' ? await getSourceId(headers, "LeadSource", model.leadSource.replace("&amp","&") ) : '69eca55d-41cf-4879-a2c2-92615574cdbf';
+
+        const medium = model.leadMedium !== '' ? model.leadMedium.replace("&amp","&") : 'Internet';
+        model.leadMedium = await getSourceId(headers, "LeadMedium", medium);
+
+        // Spam Check
+        if (model.message.includes("http")) {
+            model.interest = await getSourceId(headers, "LeadType", "Spam");
+            model.poolType = '8d7ac882-b141-456b-8ba9-d0c51cd5e1c2';
+        }
 
         return model;
     }
@@ -134,7 +144,9 @@ function SchedulerForm( props:any ) {
         leadInfo.utmCampaign = handleNullText(sessionStorage.getItem('utm_campaign'));
         leadInfo.utmMedium = handleNullText(sessionStorage.getItem('utm_medium'));
         leadInfo.utmSource = handleNullText(sessionStorage.getItem('utm_source'));
-        leadInfo.adSrc = handleNullText(sessionStorage.getItem('AdSrc'));
+        leadInfo.adSrc = handleNullText(sessionStorage.getItem('adsrc'));
+        leadInfo.leadMedium = handleNullText(sessionStorage.getItem('source'));
+        leadInfo.leadSource = handleNullText(sessionStorage.getItem('source2'));
     }
 
     const validateAddress = async () => {
@@ -155,8 +167,8 @@ function SchedulerForm( props:any ) {
             leadInfo.city = addressXml.getElementsByTagName("City")[0].innerHTML;
             leadInfo.zipCode = addressXml.getElementsByTagName("Zip5")[0].innerHTML;
         } else {
-            leadInfo.message += `\r\n \r\n USPS Validation Error: `;
-            leadInfo.message += `\r\n Address given was Address1: ${leadInfo.streetAddress} | Address2: ${leadInfo.addressLine2}`;
+            leadInfo.message += `\r\n \r\nUSPS Validation Error: `;
+            leadInfo.message += `\r\nAddress given was Address1: ${leadInfo.streetAddress} | Address2: ${leadInfo.addressLine2}`;
 
             leadInfo.streetAddress = "";
             leadInfo.addressLine2 = "";
@@ -188,7 +200,7 @@ function SchedulerForm( props:any ) {
             message: '',
             newsletter: '',
             poolType: '',
-            shortCode: 'Test Shortcode',
+            shortCode: '',
             leadMedium: '', 
             leadSource: ''
         });
