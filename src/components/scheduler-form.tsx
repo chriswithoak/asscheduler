@@ -34,6 +34,11 @@ function SchedulerForm( props:any ) {
     });
 
     useEffect(() => {
+        getSessionUtmInfo();
+        // eslint-disable-next-line
+    }, []);
+
+    useEffect(() => {
         if ( showLoader === true) {
             const loader = document.querySelector('#loader');
             if (loader) {
@@ -53,9 +58,6 @@ function SchedulerForm( props:any ) {
 
         // Sanitize Address
         sanitizeAddress();
-
-        // Get UTM Info
-        getSessionUtmInfo();
 
         // Headers
         const headers = await getAuthHeaders();
@@ -166,6 +168,30 @@ function SchedulerForm( props:any ) {
         leadInfo.addressLine2 = sanitizeInput(leadInfo.addressLine2);
         leadInfo.city = sanitizeInput(leadInfo.city);
         leadInfo.zipCode = sanitizeInput(leadInfo.zipCode);
+    }
+
+    const resetForm = () => {
+        props.liftFormSubmittedState(false);
+        setLeadInfo({...leadInfo,
+            firstName: '',
+            lastName: '',
+            streetAddress: '',
+            addressLine2: '',
+            city: '', 
+            state: '', 
+            zipCode: '',
+            email: '',
+            phone: '',
+            interest: '',
+            referral: '',
+            referrerName: '',
+            message: '',
+            newsletter: '',
+            poolType: '',
+            shortCode: 'Test Shortcode',
+            leadMedium: '', 
+            leadSource: ''
+        });
     }
 
     return(
@@ -352,7 +378,7 @@ function SchedulerForm( props:any ) {
         </div>
         }
 
-        {props.formSubmitted && <Confirmation consultants={consultants}/>}
+        {props.formSubmitted && <Confirmation consultants={consultants} resetForm={resetForm} />}
 
         </>
     )

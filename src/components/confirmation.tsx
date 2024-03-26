@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Confirmation(props:any) {
+function Confirmation( props:any ) {
     const consultants = props.consultants;
 
     return(
@@ -18,6 +18,7 @@ function Confirmation(props:any) {
                 </>
             }
             
+            <a className='refresh-form-btn' onClick={props.resetForm}>REFRESH</a>
         </div>
     )
 }

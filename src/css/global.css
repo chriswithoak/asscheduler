@@ -69,7 +69,9 @@ header.as-header {
     font-weight: 400;
 }
 
+.refresh-form-btn,
 .as-form input[type="submit"] {
+    display: inline-block;
     padding: 15px 40px;
     font-weight: bold;
     font-size: 18px;
@@ -85,10 +87,15 @@ header.as-header {
     cursor: pointer;
 }
 
+.refresh-form-btn:hover,
 .as-form input[type="submit"]:hover {
     border: 2px solid #132644;
     background: transparent;
     color: #132644;
+}
+
+.refresh-form-btn {
+    margin-top: 20px;
 }
 
 .input-group {
