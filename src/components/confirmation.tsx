@@ -18,7 +18,7 @@ function Confirmation( props:any ) {
                 </>
             }
             
-            <a className='refresh-form-btn' onClick={props.resetForm}>REFRESH</a>
+            <a className='refresh-form-btn' onClick={props.resetForm} href="#">REFRESH</a>
         </div>
     )
 }
