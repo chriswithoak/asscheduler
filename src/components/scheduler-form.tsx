@@ -69,14 +69,11 @@ function SchedulerForm( props:any ) {
         const consultants = await getConsultants( headers, leadInfo.zipCode );
         setConsultants( consultants );
 
-        console.log("LEAD INFO: ", leadInfo);
         // Lead Model
         var leadModel = await buildLeadModel(headers);
         const res = await insertLeads( headers, leadModel );
         //TODO: Add result validation
         console.log(res);
-
-        console.log("LEAD MODEL: ", leadModel);
 
         setShowLoader(false);
         props.liftFormSubmittedState(true);
