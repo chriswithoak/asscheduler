@@ -343,7 +343,7 @@ function SchedulerForm( props:any ) {
                 </div>
 
                 <div className="input-group size-half-block">
-                    <label> Were you referred by an Anthony & Sylvan Customer* </label>
+                    <label> Were you referred by an Anthony & Sylvan Customer?* </label>
 
                     <div className="check-option">
                         <label className="container">Yes
