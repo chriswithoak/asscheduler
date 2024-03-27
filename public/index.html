@@ -21,7 +21,7 @@
 
   <script>
     window.addEventListener("message", ( event ) => {
-      if (event.origin !== "https://anthonysylvstg.wpenginepowered.com" && event.origin !== "https://asredesignddev.wpengine.com/")
+      if (event.origin !== "https://anthonysylvstg.wpenginepowered.com" && event.origin !== "https://asredesignddev.wpengine.com")
         return;
 
       sessionStorage.setItem("utm_campaign", event.data.utm_campaign);
