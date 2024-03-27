@@ -69,11 +69,14 @@ function SchedulerForm( props:any ) {
         const consultants = await getConsultants( headers, leadInfo.zipCode );
         setConsultants( consultants );
 
+        console.log("LEAD INFO: ", leadInfo);
         // Lead Model
         var leadModel = await buildLeadModel(headers);
         const res = await insertLeads( headers, leadModel );
         //TODO: Add result validation
         console.log(res);
+
+        console.log("LEAD MODEL: ", leadModel);
 
         setShowLoader(false);
         props.liftFormSubmittedState(true);
@@ -201,8 +204,8 @@ function SchedulerForm( props:any ) {
             newsletter: '',
             poolType: '',
             shortCode: '',
-            leadMedium: '', 
-            leadSource: ''
+            leadMedium: handleNullText(sessionStorage.getItem('source')),
+            leadSource: handleNullText(sessionStorage.getItem('source2'))
         });
     }
 
