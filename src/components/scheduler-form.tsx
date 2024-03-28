@@ -85,6 +85,7 @@ function SchedulerForm( props:any ) {
 
         if (model.referral === "yes") {
             model.message += `\r\n \r\nReferred By: ${leadInfo.referrerName}`;
+            model.leadMedium = "Referral";
         }
 
         // SET GUIDs
